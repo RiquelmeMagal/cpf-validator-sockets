@@ -2,6 +2,10 @@
 
 import socket
 from cpf_validator import is_valid_cpf
+from rich import print
+from rich.console import Console
+
+console = Console()
 
 HOST = '127.0.0.1'  # Endereço IP do servidor
 PORT = 5001         # Porta que o servidor irá escutar no protocolo UDP
@@ -18,13 +22,14 @@ def start_udp_server():
 
         # Associa o socket ao endereço e porta
         server_socket.bind((HOST, PORT))
-        print(f"Servidor UDP aguardando mensagens em {HOST}:{PORT}...")
+
+        console.print(f"[bold green]Servidor UDP aguardando mensagens em {HOST}:{PORT}...[/bold green]")
 
         while True:
             # Recebe dados (até 1024 bytes) e endereço do cliente
             data, addr = server_socket.recvfrom(1024)
             cpf_recebido = data.decode('utf-8')
-            print(f"Recebido de {addr}: {cpf_recebido}")
+            console.print(f"[bold cyan]Recebido de {addr}:[/bold cyan] {cpf_recebido}")
 
             # Valida o CPF
             if is_valid_cpf(cpf_recebido):
@@ -34,7 +39,7 @@ def start_udp_server():
 
             # Envia resposta ao cliente
             server_socket.sendto(resposta.encode('utf-8'), addr)
-            print(f"Enviado para {addr}: {resposta}")
+            console.print(f"[bold magenta]Enviado para {addr}:[/bold magenta] {resposta}")
 
 
 if __name__ == "__main__":

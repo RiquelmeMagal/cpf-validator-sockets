@@ -2,6 +2,10 @@
 
 import socket
 from cpf_validator import is_valid_cpf
+from rich import print
+from rich.console import Console
+
+console = Console()
 
 HOST = '127.0.0.1'  # Endereço IP do servidor
 PORT = 5000         # Porta que o servidor irá escutar
@@ -21,12 +25,13 @@ def start_tcp_server():
         
         # Coloca o socket em modo de escuta
         server_socket.listen(1)
-        print(f"Servidor TCP aguardando conexões em {HOST}:{PORT}...")
+
+        console.print(f"[bold green]Servidor TCP aguardando conexões em {HOST}:{PORT}...[/bold green]")
 
         while True:
             # Aguarda conexão de um cliente
             conn, addr = server_socket.accept()
-            print(f"Conexão estabelecida com {addr}")
+            console.print(f"[bold cyan]Conexão estabelecida com {addr}[/bold cyan]")
 
             # Trata a conexão em bloco 'with' para garantir fechamento
             with conn:
@@ -34,7 +39,7 @@ def start_tcp_server():
                 data = conn.recv(1024).decode('utf-8')
 
                 if not data:
-                    # Se não receber nada, encerra a iteração
+                    console.print("[bold yellow]Nenhum dado recebido. Encerrando conexão...[/bold yellow]")
                     break
 
                 # Valida o CPF
@@ -45,7 +50,7 @@ def start_tcp_server():
 
                 # Envia a resposta ao cliente
                 conn.sendall(resposta.encode('utf-8'))
-                print(f"Enviado para {addr}: {resposta}")
+                console.print(f"[bold magenta]Enviado para {addr}: {resposta}[/bold magenta]")
 
 
 if __name__ == "__main__":
