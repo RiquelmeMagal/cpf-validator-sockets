@@ -18,14 +18,12 @@ No modelo de **cliente-servidor** em **Sistemas Distribuídos**, temos:
 
 ## 🗂 Estrutura do Projeto
 
-```
 .
 ├── cpf_validator.py      # Módulo com a lógica de validação de CPF
 ├── tcp_server.py         # Servidor TCP para validar CPF
 ├── tcp_client.py         # Cliente TCP para enviar CPF e receber resposta
 ├── udp_server.py         # Servidor UDP para validar CPF
 └── udp_client.py         # Cliente UDP para enviar CPF e receber resposta
-```
 
 ---
 
@@ -33,19 +31,50 @@ No modelo de **cliente-servidor** em **Sistemas Distribuídos**, temos:
 
 - **Python 3.7+** (ou versão superior)
 - Biblioteca padrão do Python (**não precisa instalar nada extra** para usar sockets)
+- [Rich](https://pypi.org/project/rich/) (opcional, para formatação de terminal)
 
 ---
+## 🐍 Criação do Ambiente Virtual
+
+Para isolar dependências, recomenda-se criar um **ambiente virtual** em Python.
+
+### Linux/macOS
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+- `python3 -m venv venv` cria o ambiente virtual na pasta `venv`.
+- `source venv/bin/activate` ativa o ambiente.
+
+### Windows
+
+```bash
+python -m venv venv
+.env\Scripts\activate
+```
+
+- `python -m venv venv` cria o ambiente virtual.
+- `.env\Scripts\activate` ativa o ambiente no **Windows** (PowerShell ou CMD).
+
+## 📦 Instalação de Dependências
+
+Com o ambiente virtual ativo, instale as dependências:
+
+```bash
+pip install -r requirements.txt
+```
+
+Caso não tenha o arquivo `requirements.txt`, você pode instalar manualmente:
 
 ## 📥 Como Obter o Projeto
 
 Se estiver usando **Git**, clone o repositório:
 
-```bash
-git clone https://github.com/SEU_USUARIO/cpf-validator-sockets.git
+git clone git@github.com:RiquelmeMagal/cpf-validator-sockets.git
 cd cpf-validator-sockets
-```
 
-> Substitua `SEU_USUARIO` pela URL real do seu repositório, se necessário.
 
 Caso contrário, basta baixar o projeto como arquivo `.zip`, descompactar e entrar na pasta.
 
@@ -54,6 +83,9 @@ Caso contrário, basta baixar o projeto como arquivo `.zip`, descompactar e entr
 ## 🚀 Execução
 
 O projeto oferece duas formas de rodar (**TCP ou UDP**). Você pode testar qualquer um deles.
+
+> **Observação**:  
+> Agora o cliente TCP faz um loop para permitir o envio de vários CPFs **na mesma execução** (e o servidor aceita cada um). Para sair, basta digitar **exit** no cliente.
 
 ### 1️⃣ Versão TCP
 
@@ -84,7 +116,7 @@ Conectado ao servidor TCP em 127.0.0.1:5000
 Digite o CPF (apenas números ou com pontuação, ex: 123.456.789-09):
 ```
 
-Digite um CPF válido ou inválido e veja a resposta do servidor.
+Digite um CPF válido ou inválido e veja a resposta do servidor. Repita quantas vezes quiser. Para encerrar, digite **exit**.
 
 ---
 
@@ -139,8 +171,9 @@ CPF VÁLIDO ou CPF INVÁLIDO
 3. Valida e responde (`sendto()`).
 
 ### **Cliente (UDP):**
-1. Envia CPF ao servidor (`sendto()`).
-2. Aguarda resposta (`recvfrom()`).
+1. Envia CPF ao servidor (sendto()).
+2. Aguarda resposta (recvfrom()).
+3. Também usa um **loop** para permitir múltiplos envios até digitar exit.
 
 ### **Validação do CPF:**
 - Remove caracteres não numéricos.
@@ -175,7 +208,7 @@ Servidor UDP aguardando mensagens em 127.0.0.1:5001...
 ### **Cliente UDP**
 ```bash
 python udp_client.py
-Digite o CPF (apenas números ou com pontuação, ex: 123.456.789-09): 11111111111
+Digite o CPF (ou 'exit' para sair): 11111111111
 Resposta do servidor: CPF INVÁLIDO
 ```
 
@@ -187,9 +220,11 @@ Este projeto ilustra o uso de **sockets em Python** para criar aplicações de *
 - **TCP**: Mais confiável, pois é **orientado a conexão**.
 - **UDP**: Menos confiável, mas **mais rápido e leve**.
 
+Agora os **clientes** (TCP e UDP) fazem **loop** para envio de vários CPFs, podendo encerrar a execução com exit. O servidor (especialmente no TCP) também pode ficar pronto para atender várias requisições consecutivas.
+
 ### 📝 Dicas:
 - Você pode rodar **várias instâncias** do cliente conectando-se ao mesmo servidor.
-- Teste em **máquinas diferentes** (ajuste `HOST` para o IP real do servidor).
+- Teste em **máquinas diferentes** (ajuste HOST para o IP real do servidor).
 - Sinta-se à vontade para **adicionar logs, melhorar validações ou integrar esse sistema a outras aplicações distribuídas**.
 
 Boa prática e **bons estudos em Sistemas Distribuídos!** 🚀
