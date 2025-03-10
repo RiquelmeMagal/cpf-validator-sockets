@@ -17,14 +17,14 @@ No modelo de **cliente-servidor** em **Sistemas Distribuídos**, temos:
 ---
 
 ## 🗂 Estrutura do Projeto
-
+```
 .
 ├── cpf_validator.py      # Módulo com a lógica de validação de CPF
 ├── tcp_server.py         # Servidor TCP para validar CPF
 ├── tcp_client.py         # Cliente TCP para enviar CPF e receber resposta
 ├── udp_server.py         # Servidor UDP para validar CPF
 └── udp_client.py         # Cliente UDP para enviar CPF e receber resposta
-
+```
 ---
 
 ## 📦 Requisitos
